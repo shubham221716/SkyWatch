@@ -3,27 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SkyWatch - Advanced Weather Dashboard | Shubham</title>
+  <title>SkyWatch — Real-Time Weather Dashboard | Hyperlocal Forecasts</title>
+  <meta name="description" content="SkyWatch delivers real-time hyperlocal weather forecasts, 5-day outlooks, air quality data, and UV index with stunning accuracy. Your ultimate weather companion.">
+  <meta name="keywords" content="weather, forecast, air quality, UV index, temperature, humidity, skywatch">
+  <meta name="theme-color" content="#0a1628">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- <link rel="icon" href="assets/weather-logo.png" type="image/png"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-  <header>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ===== HEADER ===== -->
+  <header id="mainHeader">
     <nav class="navbar">
-      <div class="logo-container">
-        <div class="logo">
-          <!-- <img src="assets/weather-logo.png" alt="SkyWatch Logo" class="logo-img"> -->
-          <span>SkyWatch</span>
+      <div class="logo" id="logoHome">
+        <div class="logo-icon">
+          <i class="fas fa-cloud-sun"></i>
         </div>
-        <button class="mobile-menu-toggle" aria-label="Toggle menu">
-          <i class="fas fa-bars"></i>
-        </button>
+        <span>SkyWatch</span>
       </div>
-      <ul class="nav-links">
-        <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="#features"><i class="fas fa-star"></i> Features</a></li>
-        <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#" class="active" id="nav-home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#features" id="nav-features"><i class="fas fa-bolt"></i> Features</a></li>
+        <li><a href="#about" id="nav-about"><i class="fas fa-info-circle"></i> About</a></li>
         <li>
           <button id="theme-toggle" class="theme-toggle">
             <i class="fas fa-moon"></i> Dark Mode
@@ -33,20 +42,19 @@
     </nav>
   </header>
 
-
+  <!-- ===== MAIN ===== -->
   <main>
-    <section class="hero">
-      <!-- Dynamic Weather Canvas -->
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" id="hero">
       <canvas id="weatherCanvas" class="weather-canvas"></canvas>
-      
+
       <div class="hero-content">
         <!-- Animated Weather Icon -->
         <div class="dynamic-weather-icon">
-          <svg class="weather-svg" viewBox="0 0 100 100">
-            <!-- Animated elements will be injected here by JS -->
-          </svg>
+          <svg class="weather-svg" viewBox="0 0 100 100"></svg>
         </div>
-        
+
         <h1 class="hero-title">
           <span class="title-text">Your Complete</span>
           <span class="weather-word">
@@ -59,111 +67,154 @@
             Companion
           </span>
         </h1>
-        
-        <p class="hero-subtitle">Real-time hyperlocal forecasts with AI-powered accuracy</p>
-        
-       
-        
+
+        <p class="hero-subtitle">Real-time hyperlocal forecasts with AI-powered accuracy. Check weather, air quality, UV index and more — all in one place.</p>
+
+        <!-- Hero Search Bar -->
+        <div class="hero-search">
+          <div class="hero-search-inner">
+            <input type="text" id="heroCity" placeholder="Search any city worldwide..." aria-label="Search city">
+            <button class="hero-search-btn" id="heroSearchBtn">
+              <i class="fas fa-search"></i>
+              <span>Search</span>
+            </button>
+          </div>
+          <button class="locate-btn" id="locateBtn">
+            <i class="fas fa-crosshairs"></i> Use My Location
+          </button>
+        </div>
+
         <!-- Live Weather Ticker -->
         <div class="live-weather-ticker">
-          <div class="ticker-container">
+          <div class="ticker-container" id="tickerContainer">
             <div class="ticker-item">
               <i class="fas fa-temperature-high"></i>
               <span class="ticker-value">28°C</span>
               <span class="ticker-location">New York</span>
             </div>
-            <!-- More items will be added by JS -->
           </div>
         </div>
-        
+
         <!-- Weather Metrics -->
-        <div class="weather-metrics">
+        <div class="weather-metrics" id="heroMetrics">
           <div class="metric-card">
-            <div class="metric-icon humidity"></div>
+            <div class="metric-icon humidity"><i class="fas fa-droplet"></i></div>
             <div class="metric-value">78%</div>
             <div class="metric-label">Humidity</div>
           </div>
-          <!-- More metric cards will be added by JS -->
+          <div class="metric-card">
+            <div class="metric-icon wind"><i class="fas fa-wind"></i></div>
+            <div class="metric-value">12 km/h</div>
+            <div class="metric-label">Wind</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon pressure"><i class="fas fa-gauge-high"></i></div>
+            <div class="metric-value">1013</div>
+            <div class="metric-label">Pressure</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon visibility-icon"><i class="fas fa-eye"></i></div>
+            <div class="metric-value">10 km</div>
+            <div class="metric-label">Visibility</div>
+          </div>
         </div>
       </div>
-      
-     
     </section>
 
-    <section class="weather-app">
-      <div class="container">
+    <!-- ===== WEATHER APP SECTION ===== -->
+    <section class="weather-app" id="weatherAppSection">
+      <div class="container reveal">
+        <!-- Search Section -->
         <div class="search-section">
-          <input type="text" id="city" placeholder="Enter city name (e.g., London, New York)">
+          <div class="search-bar">
+            <input type="text" id="city" placeholder="Enter city name (e.g., London, Tokyo, Mumbai)..." aria-label="City name">
+            <button class="btn btn-primary" id="searchBtn">
+              <i class="fas fa-search"></i> Search
+            </button>
+          </div>
+
           <div class="button-group">
-            <button onclick="getCurrentWeather()"><i class="fas fa-sun"></i> Current Weather</button>
-            <button onclick="getForecast()"><i class="fas fa-calendar-alt"></i> 5-Day Forecast</button>
-            <button onclick="getAirPollution()"><i class="fas fa-wind"></i> Air Quality</button>
-            <button onclick="getGeoLocation()"><i class="fas fa-map-marker-alt"></i> Coordinates</button>
+            <button class="btn btn-secondary" onclick="getCurrentWeather()"><i class="fas fa-sun"></i> Current Weather</button>
+            <button class="btn btn-secondary" onclick="getForecast()"><i class="fas fa-calendar-alt"></i> 5-Day Forecast</button>
+            <button class="btn btn-secondary" onclick="getAirPollution()"><i class="fas fa-wind"></i> Air Quality</button>
+            <button class="btn btn-secondary" onclick="getGeoLocation()"><i class="fas fa-map-marker-alt"></i> Coordinates</button>
+            <button class="btn btn-locate" id="locateBtnInline"><i class="fas fa-crosshairs"></i> My Location</button>
+
+            <!-- Unit Toggle -->
+            <div class="unit-toggle" id="unitToggle">
+              <button class="unit-btn active" data-unit="metric">°C</button>
+              <button class="unit-btn" data-unit="imperial">°F</button>
+            </div>
           </div>
         </div>
 
-        <div class="recent-searches">
-          <h3><i class="fas fa-history"></i> Recent Search Weather</h3>
+        <!-- Favorites Section -->
+        <div class="favorites-section" id="favoritesSection">
+          <h3><i class="fas fa-star"></i> Favorites</h3>
+          <div class="favorites-grid" id="favoritesGrid">
+            <span class="no-favorites">No favorites yet. Search a city and add it!</span>
+          </div>
+        </div>
+
+        <!-- Recent Searches -->
+        <div class="recent-searches" id="recentSearchesSection">
+          <h3><i class="fas fa-history"></i> Recent Searches</h3>
           <div class="recent-weather-grid" id="recentWeatherGrid"></div>
         </div>
 
+        <!-- Results -->
         <div class="result" id="result">
           <div class="welcome-message">
             <h2>Welcome to SkyWatch!</h2>
-            <p>Enter a city name and select an option to get started. You can view current weather conditions, 5-day
-              forecasts, air quality information, and geographic coordinates.</p>
+            <p>Enter a city name to explore real-time weather data. View current conditions, 5-day forecasts, air quality metrics, and geographic coordinates.</p>
             <div class="features" id="features">
               <div class="feature-card">
-                <i class="fas fa-temperature-high"></i>
+                <div class="icon-wrap"><i class="fas fa-temperature-high"></i></div>
                 <h3>Current Weather</h3>
-                <p>Get real-time temperature, humidity, wind speed, and weather conditions for any location.</p>
+                <p>Real-time temperature, humidity, wind speed, sunrise/sunset and more for any city on Earth.</p>
               </div>
               <div class="feature-card">
-                <i class="fas fa-chart-line"></i>
+                <div class="icon-wrap"><i class="fas fa-chart-line"></i></div>
                 <h3>5-Day Forecast</h3>
-                <p>Plan ahead with detailed 5-day weather forecasts updated regularly.</p>
+                <p>Plan ahead with detailed hourly breakdowns for the next 5 days, updated every 3 hours.</p>
               </div>
               <div class="feature-card">
-                <i class="fas fa-leaf"></i>
+                <div class="icon-wrap"><i class="fas fa-leaf"></i></div>
                 <h3>Air Quality</h3>
-                <p>Check pollution levels including PM2.5, PM10, O3, NO2, SO2, and CO.</p>
+                <p>Monitor pollution levels including PM2.5, PM10, O₃, NO₂, SO₂, CO with health recommendations.</p>
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Map -->
         <div class="map-container">
           <iframe class="map" id="weatherMap" loading="lazy" title="Weather Map"></iframe>
         </div>
       </div>
     </section>
 
-   
-
-    <section class="about-section" id="about">
-      <div class="container">
-        <h2>About SkyWatch</h2>
-        <p>SkyWatch is an all-in-one weather app that delivers reliable and real-time weather updates using the
-          OpenWeatherMap API. Our goal is to keep you informed about the weather—no matter where you are.
-
-          Built with the latest web technologies, SkyWatch is entirely free to use. Whether you're traveling, monitoring
-          air quality, or simply want to know the forecast, SkyWatch is your go-to weather companion.</p>
-      </div>
+    <!-- ===== ABOUT SECTION ===== -->
+    <section class="about-section reveal" id="about">
+      <h2>About SkyWatch</h2>
+      <p>SkyWatch is a premium, all-in-one weather dashboard delivering reliable real-time updates using the OpenWeatherMap API. From hyperlocal forecasts to air quality monitoring, we keep you informed and prepared — wherever you are. Built with modern web technologies, SkyWatch is completely free and designed to be your go-to weather companion.</p>
     </section>
+
   </main>
 
+  <!-- Scroll to Top -->
   <button id="scrollToTop" class="scroll-to-top" title="Go to top">
     <i class="fas fa-arrow-up"></i>
   </button>
 
+  <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-content">
       <div class="footer-section about">
-        <!-- <img src="assets/weather-logo-white.png" alt="SkyWatch Logo" class="footer-logo"> -->
-        <p>SkyWatch provides accurate, real-time weather information for locations worldwide. Our mission is to help you stay prepared for any weather conditions.</p>
+        <h3>SkyWatch</h3>
+        <p>Accurate, real-time weather information for locations worldwide. Our mission is to help you stay prepared for any weather conditions with a beautiful, intuitive interface.</p>
         <div class="contact">
-          <span><i class="fas fa-phone"></i> +1 (555) 123-4567</span>
-          <span><i class="fas fa-envelope"></i> info@SkyWatch.com</span>
+          <span><i class="fas fa-envelope"></i> info@skywatch.com</span>
         </div>
       </div>
 
@@ -172,26 +223,22 @@
         <ul>
           <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
           <li><a href="#features"><i class="fas fa-chevron-right"></i> Features</a></li>
-          <li><a href="#global-outlook"><i class="fas fa-chevron-right"></i> Global Outlook</a></li>
           <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
-          <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
         </ul>
       </div>
 
       <div class="footer-section newsletter">
         <h3>Newsletter</h3>
-        <p>Subscribe to our newsletter for weather updates and tips.</p>
-        <form class="newsletter-form">
-          <input type="email" placeholder="Your email address" required>
+        <p>Subscribe for weather tips and updates.</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="Your email address" required aria-label="Email for newsletter">
           <button type="submit"><i class="fas fa-paper-plane"></i> Subscribe</button>
         </form>
       </div>
-
     </div>
 
     <div class="footer-bottom">
-      <p>&copy; 2023 SkyWatch. All rights reserved. | Data provided by <a href="https://openweathermap.org/" target="_blank">OpenWeatherMap</a></p>
-     
+      <p>&copy; 2026 SkyWatch. All rights reserved. | Data by <a href="https://openweathermap.org/" target="_blank" rel="noopener">OpenWeatherMap</a></p>
     </div>
   </footer>
 
